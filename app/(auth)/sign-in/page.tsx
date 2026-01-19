@@ -17,7 +17,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useEffect } from "react";
 
-export default function SignIn() {
+import { Suspense } from "react";
+
+function SignInContent() {
     const searchParams = useSearchParams();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -235,4 +237,26 @@ export default function SignIn() {
         </div>
     );
 }
+
+export default function SignIn() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+                <Card className="w-full max-w-md border-none shadow-2xl backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+                    <CardHeader className="space-y-1">
+                        <CardTitle className="text-3xl font-bold text-center tracking-tight">
+                            Loading...
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-32 flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    </CardContent>
+                </Card>
+            </div>
+        }>
+            <SignInContent />
+        </Suspense>
+    );
+}
+
 
